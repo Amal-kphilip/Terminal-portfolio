@@ -17,13 +17,15 @@ body {
 
 .terminal {
   padding: 15px;
-  height: 100%;
+  height: 100vh; /* Full screen */
   box-sizing: border-box;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  min-height: 100vh;
 }
+
 
 .line {
   margin-bottom: 6px;
@@ -37,7 +39,10 @@ body {
   flex-wrap: wrap;
   align-items: center;
   gap: 5px;
+  margin-top: 10px;
+  width: 100%;
 }
+
 
 .prompt {
   margin-right: 5px;
@@ -52,8 +57,11 @@ input {
   font-size: var(--font-size);
   outline: none;
   flex-grow: 1;
-  min-width: 100px;
+  min-width: 50px;
+  width: 100%;
+  caret-color: var(--text-color); /* Cursor color */
 }
+
 
 ::selection {
   background: var(--text-color);
@@ -114,4 +122,8 @@ input {
     right: 5px;
     font-size: 13px;
   }
+}
+input::placeholder {
+  color: #008000;
+  opacity: 0.5;
 }
