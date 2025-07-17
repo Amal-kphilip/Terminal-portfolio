@@ -106,8 +106,9 @@ if (command === 'clear') {
 
 // Theme switcher
 function toggleMenu() {
-  themeDropdown.style.display = themeDropdown.style.display === 'flex' ? 'none' : 'flex';
+  themeDropdown.classList.toggle('show');
 }
+
 
 function setTheme(theme) {
   switch (theme) {
@@ -143,3 +144,16 @@ function setFontSize(size) {
   toggleMenu();
   input.focus(); // refocus input
 }
+
+document.addEventListener('click', function (e) {
+  const menu = document.getElementById('themeMenu');
+  const toggleBtn = document.getElementById('menuToggle');
+
+  if (
+    menu.classList.contains('show') &&
+    !menu.contains(e.target) &&
+    !toggleBtn.contains(e.target)
+  ) {
+    menu.classList.remove('show');
+  }
+});
