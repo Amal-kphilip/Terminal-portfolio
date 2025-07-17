@@ -1,0 +1,88 @@
+:root {
+  --text-color: #00ff00;
+  --bg-color: black;
+  --font-size: 1.1em; /* 🔼 Default text size slightly increased */
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: monospace;
+  font-size: var(--font-size); /* 🆕 */
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.terminal {
+  padding: 20px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.line {
+  display: block;
+  margin-bottom: 5px;
+  white-space: pre-wrap;
+}
+
+.input-line {
+  display: flex;
+}
+
+.prompt {
+  margin-right: 5px;
+}
+
+input {
+  background: transparent;
+  border: none;
+  color: var(--text-color);
+  font-family: monospace;
+  font-size: var(--font-size); /* 🆕 */
+  outline: none;
+  flex-grow: 1;
+}
+
+::selection {
+  background: var(--text-color);
+  color: black;
+}
+
+.menu {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  z-index: 100;
+}
+
+.hamburger {
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.theme-dropdown {
+  display: none;
+  flex-direction: column;
+  background-color: #222;
+  border: 1px solid #444;
+  margin-top: 5px;
+  position: absolute;
+  right: 0;
+  min-width: 140px;
+}
+
+.theme-dropdown div {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #eee;
+  font-size: 14px;
+  border-bottom: 1px solid #333;
+}
+
+.theme-dropdown div:hover {
+  background-color: #444;
+}

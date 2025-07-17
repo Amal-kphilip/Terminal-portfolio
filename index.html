@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Terminal Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Theme menu -->
+  <!-- Menu Button and Dropdown -->
+<div class="menu">
+  <div class="hamburger" onclick="toggleMenu()">
+    &#9776;
+  </div>
+  <div class="theme-dropdown" id="themeDropdown">
+    <div onclick="setTheme('green')">Classic Green</div>
+    <div onclick="setTheme('amber')">Retro Amber</div>
+    <div onclick="setTheme('matrix')">Matrix</div>
+    <hr style="margin: 5px 0; border: 0.5px solid #333;">
+    <div onclick="setFontSize('small')">Text: Small</div>
+    <div onclick="setFontSize('medium')">Text: Medium</div>
+    <div onclick="setFontSize('large')">Text: Large</div>
+  </div>
+</div>
+
+
+  <!-- Terminal -->
+  <div class="terminal" id="terminal">
+    <div class="line" id="welcome"></div>
+    <div class="input-line">
+      <span class="prompt">user@portfolio:~$</span>
+      <input type="text" id="commandInput" autofocus autocomplete="off" />
+    </div>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
