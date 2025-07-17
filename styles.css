@@ -1,14 +1,14 @@
 :root {
   --text-color: #00ff00;
   --bg-color: black;
-  --font-size: 1.1em; /* 🔼 Default text size slightly increased */
+  --font-size: 1.1em;
 }
 
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
   font-family: monospace;
-  font-size: var(--font-size); /* 🆕 */
+  font-size: var(--font-size);
   margin: 0;
   padding: 0;
   height: 100vh;
@@ -16,24 +16,32 @@ body {
 }
 
 .terminal {
-  padding: 20px;
+  padding: 15px;
   height: 100%;
   box-sizing: border-box;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .line {
-  display: block;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   white-space: pre-wrap;
+  word-break: break-word;
+  width: 100%;
 }
 
 .input-line {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
 }
 
 .prompt {
   margin-right: 5px;
+  white-space: nowrap;
 }
 
 input {
@@ -41,9 +49,10 @@ input {
   border: none;
   color: var(--text-color);
   font-family: monospace;
-  font-size: var(--font-size); /* 🆕 */
+  font-size: var(--font-size);
   outline: none;
   flex-grow: 1;
+  min-width: 100px;
 }
 
 ::selection {
@@ -72,7 +81,7 @@ input {
   margin-top: 5px;
   position: absolute;
   right: 0;
-  min-width: 140px;
+  min-width: 150px;
 }
 
 .theme-dropdown div {
@@ -85,4 +94,24 @@ input {
 
 .theme-dropdown div:hover {
   background-color: #444;
+}
+
+/* ✅ Mobile-friendly tweaks */
+@media (max-width: 600px) {
+  :root {
+    --font-size: 1em;
+  }
+
+  .terminal {
+    padding: 10px;
+  }
+
+  .prompt {
+    margin-bottom: 3px;
+  }
+
+  .theme-dropdown {
+    right: 5px;
+    font-size: 13px;
+  }
 }
