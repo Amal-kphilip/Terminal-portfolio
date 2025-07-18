@@ -1,159 +1,165 @@
-const terminal = document.getElementById('terminal');
-const input = document.getElementById('commandInput');
-const welcome = document.getElementById('welcome');
-const themeDropdown = document.getElementById('themeDropdown');
+document.addEventListener("DOMContentLoaded", () => {
+  const terminal = document.getElementById('terminal');
+  const input = document.getElementById('commandInput');
+  const welcome = document.getElementById('welcome');
+  const themeDropdown = document.getElementById('themeDropdown');
+  const menuToggle = document.getElementById('menuToggle');
 
-const commands = {
-  help: `Available commands:\n- about\n- projects\n- contact\n- clear`,
-  about: `Hi! I'm Amal, a B.Tech CSE student passionate about coding and technology.`,
-  projects: `1. YouTube MP3 Converter\n2. Terminal Portfolio (this!)\n3. Anti-Drug Cell Website`,
-  contact: `Email: amal@example.com\nGitHub: github.com/Amal-K-Philip\nTelegram: @AmalPhilip`,
-  clear: 'clear'
-};
+  // Show terminal and welcome message
+  terminal.style.display = "flex";
+  welcome.innerText = "Welcome to Amal's Terminal Portfolio! Type 'help' to get started.";
+  input.focus();
 
-// Typing animation function
-function typeText(element, text, speed = 25, callback) {
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      element.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(type, speed);
-    } else if (callback) {
-      callback();
+
+  // Commands
+  const commands = {
+    help: `Available commands:\n- about\n- projects\n- contact\n- clear`,
+    about: `Hi! I'm Amal, a B.Tech CSE student passionate about coding and technology.`,
+    contact: `Email: amal@example.com\nGitHub: github.com/Amal-K-Philip\nTelegram: @AmalPhilip`,
+    clear: "clear"
+  };
+
+  let history = [];
+  let historyIndex = -1;
+
+  function typeText(element, text, speed = 25, callback) {
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        element.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, speed);
+      } else if (callback) {
+        callback();
+      }
     }
+    type();
   }
-  type();
-}
 
-// Welcome Message
-typeText(welcome, "Welcome to Amal's Terminal Portfolio! Type 'help' to get started.\n");
+  input.addEventListener("keydown", (e) => {
+    const originalValue = input.value.trim();
 
-let history = [];
-let historyIndex = -1;
+    if (e.key === "Enter") {
+      const command = originalValue.toLowerCase();
+      if (command === '') return;
 
-input.addEventListener('keydown', function (e) {
-  const originalValue = input.value.trim();
+      // Save to history
+      history.push(originalValue);
+      historyIndex = history.length;
 
-  if (e.key === 'Enter') {
-    const command = originalValue.toLowerCase();
-    if (command === '') return;
+      // Show command in terminal
+      const inputLine = document.createElement('div');
+      inputLine.classList.add('line');
+      inputLine.innerHTML = `<span class="prompt">user@portfolio:~$</span> ${originalValue}`;
+      terminal.insertBefore(inputLine, input.parentElement);
 
-    // Save to history
-    history.push(originalValue);
-    historyIndex = history.length;
+      if (command === 'clear') {
+        const lines = terminal.querySelectorAll('.line');
+        lines.forEach(line => {
+          if (line !== welcome) line.remove();
+        });
+        input.value = '';
+        terminal.scrollTop = terminal.scrollHeight;
+        return;
+      }
 
-    // Show typed command
-    const inputLine = document.createElement('div');
-    inputLine.classList.add('line');
-    inputLine.innerHTML = `<span class="prompt">guest@portfolio:~$</span> ${originalValue}`;
-    terminal.insertBefore(inputLine, input.parentElement);
-
-    // Clear terminal
-if (command === 'clear') {
-  const lines = terminal.querySelectorAll('.line');
-  lines.forEach((line, index) => {
-    if (line !== welcome) {
-      line.remove(); // Remove all except the welcome message
-    }
-  });
-  input.value = '';
-  terminal.scrollTop = terminal.scrollHeight;
-  return;
-}
-
-
-    // Output handling
-    if (commands.hasOwnProperty(command)) {
       const output = document.createElement('div');
       output.classList.add('line');
       terminal.insertBefore(output, input.parentElement);
-      typeText(output, commands[command]);
-    } else {
-      const error = document.createElement('div');
-      error.classList.add('line');
-      terminal.insertBefore(error, input.parentElement);
-      typeText(error, `Command not found: ${command}`);
-    }
 
-    input.value = '';
-    terminal.scrollTop = terminal.scrollHeight;
-  }
+      if (command === 'projects') {
+        typeText(output, "Loading projects...\n", 25, () => {
+          const links = document.createElement('div');
+          links.classList.add('line');
+          links.innerHTML = `
+            <div><span style="color:#0f0;">1.</span> <a href="https://your-youtube-mp3-site.com" target="_blank">YouTube MP3 Converter</a></div>
+            <div><span style="color:#0f0;">2.</span> <a href="https://github.com/Amal-K-Philip/terminal-portfolio" target="_blank">Terminal Portfolio</a></div>
+            <div><span style="color:#0f0;">3.</span> <a href="https://your-antidrug-website.com" target="_blank">Anti-Drug Cell Website</a></div>
+          `;
+          terminal.insertBefore(links, input.parentElement);
+          terminal.scrollTop = terminal.scrollHeight;
+        });
+      } else if (commands.hasOwnProperty(command)) {
+        typeText(output, commands[command]);
+      } else {
+        typeText(output, `Command not found: ${command}`);
+      }
 
-  // ↑ arrow for previous command
-  if (e.key === 'ArrowUp') {
-    if (historyIndex > 0) {
-      historyIndex--;
-      input.value = history[historyIndex];
-    }
-    e.preventDefault();
-  }
-
-  // ↓ arrow for next command
-  if (e.key === 'ArrowDown') {
-    if (historyIndex < history.length - 1) {
-      historyIndex++;
-      input.value = history[historyIndex];
-    } else {
-      historyIndex = history.length;
       input.value = '';
+      terminal.scrollTop = terminal.scrollHeight;
     }
-    e.preventDefault();
-  }
-});
 
+    // Arrow ↑
+    if (e.key === 'ArrowUp') {
+      if (historyIndex > 0) {
+        historyIndex--;
+        input.value = history[historyIndex];
+      }
+      e.preventDefault();
+    }
 
+    // Arrow ↓
+    if (e.key === 'ArrowDown') {
+      if (historyIndex < history.length - 1) {
+        historyIndex++;
+        input.value = history[historyIndex];
+      } else {
+        historyIndex = history.length;
+        input.value = '';
+      }
+      e.preventDefault();
+    }
+  });
 
-// Theme switcher
-function toggleMenu() {
-  themeDropdown.classList.toggle('show');
-}
+  // Theme toggle dropdown
+  menuToggle.addEventListener("click", function (e) {
+    themeDropdown.classList.toggle("show");
+    e.stopPropagation();
+  });
 
+  document.addEventListener("click", function (e) {
+    if (
+      !themeDropdown.contains(e.target) &&
+      !menuToggle.contains(e.target)
+    ) {
+      themeDropdown.classList.remove("show");
+    }
+  });
 
-function setTheme(theme) {
-  switch (theme) {
-    case 'green':
-      document.documentElement.style.setProperty('--text-color', '#00ff00');
-      document.documentElement.style.setProperty('--bg-color', 'black');
-      break;
-    case 'amber':
-      document.documentElement.style.setProperty('--text-color', '#ffbf00');
-      document.documentElement.style.setProperty('--bg-color', '#101010');
-      break;
-    case 'matrix':
-      document.documentElement.style.setProperty('--text-color', '#00ffcc');
-      document.documentElement.style.setProperty('--bg-color', '#001100');
-      break;
-  }
-  toggleMenu();
-  input.focus(); // ✅ Fix: restore typing input after theme change
-}
+  // Theme switching
+  window.setTheme = function (theme) {
+    switch (theme) {
+      case 'green':
+        document.documentElement.style.setProperty('--text-color', '#00ff00');
+        document.documentElement.style.setProperty('--bg-color', 'black');
+        break;
+      case 'amber':
+        document.documentElement.style.setProperty('--text-color', '#ffbf00');
+        document.documentElement.style.setProperty('--bg-color', '#101010');
+        break;
+      case 'matrix':
+        document.documentElement.style.setProperty('--text-color', '#00ffcc');
+        document.documentElement.style.setProperty('--bg-color', '#001100');
+        break;
+    }
+    themeDropdown.classList.remove("show");
+    input.focus();
+  };
 
-function setFontSize(size) {
-  switch (size) {
-    case 'small':
-      document.documentElement.style.setProperty('--font-size', '0.95em');
-      break;
-    case 'medium':
-      document.documentElement.style.setProperty('--font-size', '1.1em');
-      break;
-    case 'large':
-      document.documentElement.style.setProperty('--font-size', '1.35em');
-      break;
-  }
-  toggleMenu();
-  input.focus(); // refocus input
-}
-
-document.addEventListener('click', function (e) {
-  const menu = document.getElementById('themeMenu');
-  const toggleBtn = document.getElementById('menuToggle');
-
-  if (
-    menu.classList.contains('show') &&
-    !menu.contains(e.target) &&
-    !toggleBtn.contains(e.target)
-  ) {
-    menu.classList.remove('show');
-  }
+  // Font size switching
+  window.setFontSize = function (size) {
+    switch (size) {
+      case 'small':
+        document.documentElement.style.setProperty('--font-size', '0.95em');
+        break;
+      case 'medium':
+        document.documentElement.style.setProperty('--font-size', '1.1em');
+        break;
+      case 'large':
+        document.documentElement.style.setProperty('--font-size', '1.35em');
+        break;
+    }
+    themeDropdown.classList.remove("show");
+    input.focus();
+  };
 });

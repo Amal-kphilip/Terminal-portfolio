@@ -5,14 +5,14 @@
 }
 
 body {
-  background-color: var(--bg-color);
+  background-color: black;
   color: var(--text-color);
   font-family: monospace;
   font-size: var(--font-size);
   margin: 0;
   padding: 0;
   height: 100vh;
-  overflow: hidden;
+  overflow-y: auto; /* allow scroll for boot screen */
 }
 
 .terminal {
@@ -35,12 +35,12 @@ body {
 
 .input-line {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
   gap: 5px;
-  margin-top: 10px;
+  flex-wrap: nowrap; /* Force everything on the same line */
   width: 100%;
 }
+
 
 .prompt {
   margin-right: 5px;
@@ -54,10 +54,10 @@ input {
   font-family: monospace;
   font-size: var(--font-size);
   outline: none;
-  flex-grow: 1;
+  flex: 1 1 auto;        /* Let it shrink and grow */
   min-width: 50px;
-  width: 100%;
   caret-color: var(--text-color);
+  width: auto;           /* Prevent breaking to new line */
 }
 
 ::selection {
@@ -148,3 +148,9 @@ input::placeholder {
   cursor: pointer;
   z-index: 1000;
 }
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
